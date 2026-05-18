@@ -1,21 +1,45 @@
 "use client";
 
-import { FieldError, Input, Label, ListBox, TextField, Select, TextArea, Button, Card } from "@heroui/react";
-import React from "react";
+import { FieldError, Input, Label, ListBox, TextField, Select, TextArea, Button, Card, SelectItem, Checkbox } from "@heroui/react";
+import React, { useState } from "react";
 
 const AddRoomPage = () => {
-  const onSubmit = (e) => {
+  const [amenities, setAmenities] = useState([]);
+
+  const handleAmenityChange = (value, checked) => {
+    setAmenities((prev) => (checked ? [...prev, value] : prev.filter((a) => a !== value)));
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
 
     const room = Object.fromEntries(formData.entries());
 
-    console.log(room);
+    const finalRoom = {
+      ...room,
+      amenities: [...amenities],
+    };
+
+    console.log(finalRoom);
+
+    const res = await fetch("http://localhost:5000/rooms", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(finalRoom),
+    });
+
+    const data = await res.json();
+
+    console.log(data);
   };
 
   return (
     <div className="max-w-7xl mx-auto my-10">
+      <h1 className="text-5xl font-bold mb-6">Add Room</h1>
       <Card className="border border-gray-300 rounded-none bg-[#0d1f3c]">
         <form onSubmit={onSubmit} className="p-10 space-y-8 w-3xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -67,6 +91,92 @@ const AddRoomPage = () => {
                 <TextArea placeholder="Describe the room details..." className="rounded-none" />
                 <FieldError />
               </TextField>
+            </div>
+          </div>
+
+          <div className="">
+            <Label className="text-white mb-3">Amenities</Label>
+
+            <div className="border-t border-gray-300 my-4"></div>
+
+            <div className="grid grid-cols-3 gap-1.5">
+              <div className="p-1.5 bg-blue-950">
+                <Checkbox id="whiteboard" onChange={(checked) => handleAmenityChange("Whiteboard", checked)}>
+                  <Checkbox.Control>
+                    <Checkbox.Indicator />
+                  </Checkbox.Control>
+                  <Checkbox.Content>
+                    <Label className="text-white" htmlFor="whiteboard">
+                      Whiteboard
+                    </Label>
+                  </Checkbox.Content>
+                </Checkbox>
+              </div>
+
+              <div className="p-1.5 bg-blue-950">
+                <Checkbox id="projector" onChange={(checked) => handleAmenityChange("Projector", checked)}>
+                  <Checkbox.Control>
+                    <Checkbox.Indicator />
+                  </Checkbox.Control>
+                  <Checkbox.Content>
+                    <Label className="text-white" htmlFor="projector">
+                      Projector
+                    </Label>
+                  </Checkbox.Content>
+                </Checkbox>
+              </div>
+
+              <div className="p-1.5 bg-blue-950">
+                <Checkbox id="wifi" onChange={(checked) => handleAmenityChange("Wi-Fi", checked)}>
+                  <Checkbox.Control>
+                    <Checkbox.Indicator />
+                  </Checkbox.Control>
+                  <Checkbox.Content>
+                    <Label className="text-white" htmlFor="wifi">
+                      Wi-Fi
+                    </Label>
+                  </Checkbox.Content>
+                </Checkbox>
+              </div>
+
+              <div className="p-1.5 bg-blue-950">
+                <Checkbox id="power-outlets" onChange={(checked) => handleAmenityChange("Power Outlets", checked)}>
+                  <Checkbox.Control>
+                    <Checkbox.Indicator />
+                  </Checkbox.Control>
+                  <Checkbox.Content>
+                    <Label className="text-white" htmlFor="power-outlets">
+                      Power Outlets
+                    </Label>
+                  </Checkbox.Content>
+                </Checkbox>
+              </div>
+
+              <div className="p-1.5 bg-blue-950">
+                <Checkbox id="quiet-zone" onChange={(checked) => handleAmenityChange("Quiet Zone", checked)}>
+                  <Checkbox.Control>
+                    <Checkbox.Indicator />
+                  </Checkbox.Control>
+                  <Checkbox.Content>
+                    <Label className="text-white" htmlFor="quiet-zone">
+                      Quiet Zone
+                    </Label>
+                  </Checkbox.Content>
+                </Checkbox>
+              </div>
+
+              <div className="p-1.5 bg-blue-950">
+                <Checkbox id="air-conditioning" onChange={(checked) => handleAmenityChange("Air Conditioning", checked)}>
+                  <Checkbox.Control>
+                    <Checkbox.Indicator />
+                  </Checkbox.Control>
+                  <Checkbox.Content>
+                    <Label className="text-white" htmlFor="air-conditioning">
+                      Air Conditioning
+                    </Label>
+                  </Checkbox.Content>
+                </Checkbox>
+              </div>
             </div>
           </div>
 
