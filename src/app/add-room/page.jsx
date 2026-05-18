@@ -1,7 +1,9 @@
 "use client";
 
 import { FieldError, Input, Label, ListBox, TextField, Select, TextArea, Button, Card, SelectItem, Checkbox } from "@heroui/react";
+import { redirect, useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const AddRoomPage = () => {
   const [amenities, setAmenities] = useState([]);
@@ -9,6 +11,8 @@ const AddRoomPage = () => {
   const handleAmenityChange = (value, checked) => {
     setAmenities((prev) => (checked ? [...prev, value] : prev.filter((a) => a !== value)));
   };
+
+  const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -24,17 +28,32 @@ const AddRoomPage = () => {
 
     console.log(finalRoom);
 
-    const res = await fetch("http://localhost:5000/rooms", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(finalRoom),
-    });
+    try {
+      const res = await fetch("http://localhost:5000/rooms", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(finalRoom),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    console.log(data);
+      if (data) {
+        console.log("Room added successfully!", data.insertedId);
+        toast.success("Room Added Successfully", {
+          position: "top-center",
+        });
+        router.push("/rooms");
+
+        // e.g. router.push("/rooms") or show a toast
+      } else {
+        console.error("Failed to add room:", data.message);
+        toast.error("Failed to add room:", data.message);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
   };
 
   return (
