@@ -88,7 +88,7 @@ const RoomDetailsPage = async ({ params }) => {
                 <span className="font-display text-6xl font-normal leading-none text-[#f7f4ef]">${rate}</span>
               </div>
 
-              <div className="w-full h-px bg-white/10 mb-8" />
+              <div className="w-full h-px bg-white/10 mb-8 mt-4" />
 
               {/* Details */}
               <div className="space-y-4 mb-8">

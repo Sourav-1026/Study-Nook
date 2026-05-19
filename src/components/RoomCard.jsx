@@ -8,7 +8,7 @@ const RoomCard = ({ r }) => {
     <div className="shadow-md rounded-md border border-gray-300 flex flex-col" key={r._id}>
       <Image src={r.imageUrl} alt={r.roomName} width={400} height={400} className="w-full object-cover rounded-md" />
 
-      <div className="p-5 space-y-4">
+      <div className="p-5 space-y-4 flex-1">
         <p className="text-lg font-semibold">Room Name: {r.roomName}</p>
         <p className="text-shadow-md">Description: {r.description}</p>
         <div className="grid grid-cols-2 gap-2.5">
@@ -25,8 +25,8 @@ const RoomCard = ({ r }) => {
         </p>
         <p className="text-lg font-semibold">Amenities:</p>
         <div className="flex flex-wrap gap-1.5 ">
-          {r.amenities.map((a) => (
-            <div className="p-3 bg-blue-900 text-white rounded-md" key={a.ind}>
+          {r.amenities.map((a, ind) => (
+            <div className="p-3 bg-blue-900 text-white rounded-md" key={ind}>
               {a}
             </div>
           ))}
