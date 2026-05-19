@@ -32,7 +32,7 @@ const SignUpPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto my-20">
-      <h1 className="text-3xl font-bold text-center mb-6">Register User Page</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">User Registration Page</h1>
       <Card className=" bg-[#0d1f3c] rounded-none">
         <Form className="flex w-2xl flex-col gap-8" onSubmit={onSubmit}>
           <TextField isRequired name="name" type="text">
