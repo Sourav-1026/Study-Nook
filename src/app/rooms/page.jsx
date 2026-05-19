@@ -6,7 +6,7 @@ const RoomPage = async () => {
 
   const rooms = await res.json();
 
-  console.log(rooms);
+  // console.log(rooms);
 
   return (
     <div className="max-w-7xl mx-auto my-10">

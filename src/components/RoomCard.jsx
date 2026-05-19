@@ -1,5 +1,6 @@
 import { Button } from "@heroui/react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const RoomCard = ({ r }) => {
@@ -31,7 +32,9 @@ const RoomCard = ({ r }) => {
           ))}
         </div>
       </div>
-      <Button className="rounded none w-full bg-[#0d1f3c] mt-auto">View Details</Button>
+      <Link href={`/rooms/${r._id}`}>
+        <Button className="rounded none w-full bg-[#0d1f3c] mt-auto">View Details</Button>
+      </Link>
     </div>
   );
 };
