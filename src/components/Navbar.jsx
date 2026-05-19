@@ -31,8 +31,12 @@ const Navbar = () => {
         </div>
         <ul className="flex items-center gap-4">{links}</ul>
         <div className="flex items-center gap-1.5">
-          <Button className="rounded-none bg-transparent text-[#0d1f3c] border border-[#0d1f3c]">Login</Button>
-          <Button className="rounded-none bg-[#0d1f3c]">Register</Button>
+          <Link href="/login">
+            <Button className="rounded-none bg-transparent text-[#0d1f3c] border border-[#0d1f3c]">Login</Button>
+          </Link>
+          <Link href="/signup">
+            <Button className="rounded-none bg-[#0d1f3c]">Register</Button>
+          </Link>
         </div>
       </header>
     </nav>
