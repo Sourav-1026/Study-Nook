@@ -1,8 +1,30 @@
+"use client";
+
 import React from "react";
 import { AlertDialog, Button } from "@heroui/react";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const DeleteModal = ({ room }) => {
-  const { roomName } = room;
+  const router = useRouter();
+  const { _id, roomName } = room;
+
+  const handleDelete = async () => {
+    const res = await fetch(`http://localhost:5000/rooms/${_id}`, {
+      method: "DELETE",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    if (data) {
+      toast.warning("Room deleted successfully");
+      router.push("/rooms");
+    }
+  };
 
   return (
     <AlertDialog>
@@ -26,7 +48,7 @@ const DeleteModal = ({ room }) => {
               <Button slot="close" variant="tertiary">
                 Cancel
               </Button>
-              <Button slot="close" variant="danger">
+              <Button onClick={handleDelete} slot="close" variant="danger">
                 Delete Project
               </Button>
             </AlertDialog.Footer>

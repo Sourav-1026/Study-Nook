@@ -4,8 +4,10 @@ import React, { useState } from "react";
 import { Button, Card, Checkbox, FieldError, Input, Label, Modal, Surface, TextArea, TextField } from "@heroui/react";
 import { FaRegEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const EditModal = ({ room }) => {
+  const router = useRouter();
   const { _id, description, imageUrl, capacity, rate, floor, roomName } = room;
 
   const [amenities, setAmenities] = useState([]);
