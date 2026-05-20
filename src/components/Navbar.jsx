@@ -25,10 +25,10 @@ const Navbar = () => {
             <Link href="/add-room">Add Room</Link>
           </li>
           <li>
-            <Link href="/">My Listings</Link>
+            <Link href="/my-listings">My Listings</Link>
           </li>
           <li>
-            <Link href="/">My Bookings</Link>
+            <Link href="/my-bookings">My Bookings</Link>
           </li>
         </>
       ) : (

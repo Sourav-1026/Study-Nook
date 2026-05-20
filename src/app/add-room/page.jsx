@@ -1,11 +1,16 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { FieldError, Input, Label, ListBox, TextField, Select, TextArea, Button, Card, SelectItem, Checkbox } from "@heroui/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 const AddRoomPage = () => {
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  console.log(user);
+
   const [amenities, setAmenities] = useState([]);
 
   const handleAmenityChange = (value, checked) => {
@@ -24,6 +29,7 @@ const AddRoomPage = () => {
     const finalRoom = {
       ...room,
       amenities: [...amenities],
+      userId: user?.id,
     };
 
     console.log(finalRoom);

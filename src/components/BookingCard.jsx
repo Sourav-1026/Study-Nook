@@ -34,10 +34,10 @@ const BookingCard = ({ room }) => {
 
   const handleBooking = async () => {
     const bookingData = {
-      userId: user.id,
-      userEmail: user.email,
-      userImage: user.image,
-      userName: user.name,
+      userId: user?.id,
+      userEmail: user?.email,
+      userImage: user?.image,
+      userName: user?.name,
       roomId: _id,
       roomName,
       price: totalCost,
@@ -48,6 +48,7 @@ const BookingCard = ({ room }) => {
       bookingDate: new Date(date),
       bookingStartHour: startHour,
       bookingEndHour: endHour,
+      roomStatus: "Confirmed",
     };
 
     const res = await fetch("http://localhost:5000/bookings", {

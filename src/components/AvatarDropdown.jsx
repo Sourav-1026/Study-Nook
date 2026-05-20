@@ -1,8 +1,6 @@
 import React from "react";
 import { Avatar, Dropdown, Label } from "@heroui/react";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import { BsPersonSquare } from "react-icons/bs";
-import { GiEarbuds } from "react-icons/gi";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
@@ -55,7 +53,7 @@ const AvatarDropdown = ({ user }) => {
             </Link>
           </Dropdown.Item>
           <Dropdown.Item id="my-bookings" textValue="My Bookings">
-            <Link href="/">
+            <Link href="/my-bookings">
               <Label>My Bookings</Label>
             </Link>
           </Dropdown.Item>
