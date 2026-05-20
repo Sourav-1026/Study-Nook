@@ -1,8 +1,16 @@
+"use client";
+
 import React from "react";
 import { Button } from "@heroui/react";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import AvatarDropdown from "./AvatarDropdown";
 
 const Navbar = () => {
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  // console.log(user);
+
   const links = (
     <>
       <li>
@@ -11,15 +19,21 @@ const Navbar = () => {
       <li>
         <Link href="/rooms">Rooms</Link>
       </li>
-      <li>
-        <Link href="/add-room">Add Room</Link>
-      </li>
-      <li>
-        <Link href="/">My Listings</Link>
-      </li>
-      <li>
-        <Link href="/">My Bookings</Link>
-      </li>
+      {user ? (
+        <>
+          <li>
+            <Link href="/add-room">Add Room</Link>
+          </li>
+          <li>
+            <Link href="/">My Listings</Link>
+          </li>
+          <li>
+            <Link href="/">My Bookings</Link>
+          </li>
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 
@@ -31,12 +45,20 @@ const Navbar = () => {
         </div>
         <ul className="flex items-center gap-4">{links}</ul>
         <div className="flex items-center gap-1.5">
-          <Link href="/login">
-            <Button className="rounded-none bg-transparent text-[#0d1f3c] border border-[#0d1f3c]">Login</Button>
-          </Link>
-          <Link href="/signup">
-            <Button className="rounded-none bg-[#0d1f3c]">Register</Button>
-          </Link>
+          {user ? (
+            <>
+              <AvatarDropdown user={user} />
+            </>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button className="rounded-none bg-transparent text-[#0d1f3c] border border-[#0d1f3c]">Login</Button>
+              </Link>
+              <Link href="/signup">
+                <Button className="rounded-none bg-[#0d1f3c]">Register</Button>
+              </Link>
+            </>
+          )}
         </div>
       </header>
     </nav>

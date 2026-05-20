@@ -28,6 +28,12 @@ const LoginPage = () => {
     }
   };
 
+  const signInWithGoogle = async () => {
+    const user = await authClient.signIn.social({
+      provider: "google",
+    });
+  };
+
   return (
     <div className="max-w-7xl mx-auto my-20">
       <h1 className="text-3xl font-bold text-center mb-6">User Login Page</h1>
@@ -59,7 +65,7 @@ const LoginPage = () => {
               <BiCheck />
               Login
             </Button>
-            <Button type="reset" variant="secondary" className="bg-white text-[#0d1f3c]">
+            <Button onClick={signInWithGoogle} type="reset" variant="secondary" className="bg-white text-[#0d1f3c]">
               Continue with Google
             </Button>
           </div>

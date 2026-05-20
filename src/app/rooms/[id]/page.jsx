@@ -1,8 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@heroui/react";
-import EditModal from "@/components/EditModal";
-import DeleteModal from "@/components/DeleteModal";
+import BookingCard from "@/components/BookingCard";
 
 const RoomDetailsPage = async ({ params }) => {
   const { id } = await params;
@@ -80,48 +77,7 @@ const RoomDetailsPage = async ({ params }) => {
           </div>
 
           {/* ── Right Column — Booking Card ── */}
-          <div className="lg:pt-2">
-            <div className="sticky top-8 bg-[#1a1714] text-[#f7f4ef] p-8">
-              {/* Rate */}
-              <p className="font-body text-[0.6rem] tracking-[0.22em] uppercase text-[#a09880] mb-1">Hourly Rate</p>
-              <div className="flex items-end gap-1 mb-1">
-                <span className="font-display text-6xl font-normal leading-none text-[#f7f4ef]">${rate}</span>
-              </div>
-
-              <div className="w-full h-px bg-white/10 mb-8 mt-4" />
-
-              {/* Details */}
-              <div className="space-y-4 mb-8">
-                {[
-                  { key: "Room", val: roomName },
-                  { key: "Floor", val: floor },
-                  { key: "Capacity", val: `${capacity} People` },
-                ].map(({ key, val }) => (
-                  <div key={key} className="flex justify-between items-center">
-                    <span className="font-body text-[0.6rem] tracking-[0.18em] uppercase text-[#6b6358]">{key}</span>
-                    <span className="font-display text-base text-[#c8bfb0]">{val}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="w-full h-px bg-white/10 mb-8" />
-
-              {/* Book Now Button */}
-              <Link
-                href={`/rooms/${id}/book`}
-                className="font-body block w-full py-4 text-center text-[0.7rem] tracking-[0.28em] uppercase font-medium bg-[#d4a853] text-[#1a1714] hover:bg-[#f7f4ef] hover:tracking-[0.35em] transition-all duration-300"
-              >
-                Book Now
-              </Link>
-
-              {/* Edit & Delete Buttons */}
-              <div className="flex gap-3 mt-4">
-                <EditModal room={room} />
-
-                <DeleteModal room={room} />
-              </div>
-            </div>
-          </div>
+          <BookingCard room={room} />
         </div>
       </div>
     </div>
