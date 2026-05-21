@@ -1,6 +1,7 @@
 import { Button } from "@heroui/react";
 import Link from "next/link";
 import React from "react";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const Banner = () => {
   return (
@@ -11,7 +12,10 @@ const Banner = () => {
           Browse and book quiet, private study rooms in your library. <br /> List your own room and earn.
         </p>
         <Link href="/rooms">
-          <Button className="rounded-none bg-transparent text-white border border-white">Explore</Button>
+          <Button className="rounded-md bg-transparent text-white border border-white">
+            Explore
+            <FaArrowRightLong />
+          </Button>
         </Link>
       </div>
     </div>

@@ -2,11 +2,12 @@ import { Button } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const RoomCard = ({ r }) => {
   return (
     <div className="shadow-md rounded-md border border-gray-300 flex flex-col" key={r._id}>
-      <Image src={r.imageUrl} alt={r.roomName} width={400} height={400} className="w-full object-cover rounded-md" />
+      <Image src={r.imageUrl} alt={r.roomName} width={400} height={400} className="w-full h-60 object-cover rounded-md" />
 
       <div className="p-5 space-y-4 flex-1">
         <p className="text-lg font-semibold">Room Name: {r.roomName}</p>
@@ -33,7 +34,10 @@ const RoomCard = ({ r }) => {
         </div>
       </div>
       <Link href={`/rooms/${r._id}`}>
-        <Button className="rounded none w-full bg-[#0d1f3c] mt-auto">View Details</Button>
+        <Button className="rounded none w-full bg-[#0d1f3c] mt-auto hover:bg-amber-400 hover:text-[#0d1f3c]">
+          View Details
+          <FaArrowRightLong />
+        </Button>
       </Link>
     </div>
   );

@@ -37,8 +37,8 @@ export default function Searchbar() {
   };
 
   return (
-    <div className="">
-      <div className="bg-[#0d1f3c] rounded-2xl p-7 w-full max-w-sm">
+    <div className="px-4 md:px-0">
+      <div className="bg-[#0d1f3c] rounded-2xl p-7 w-full lg:max-w-sm">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div className=""></div>
@@ -60,7 +60,7 @@ export default function Searchbar() {
           <label className="block text-slate-400 text-xs mb-2">Search by room name</label>
           <div className="relative flex flex-col gap-2">
             <svg
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 pointer-events-none"
+              className="absolute left-3 top-5 -translate-y-1/2 text-slate-500 w-4 h-4 pointer-events-none"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="none"
@@ -79,7 +79,7 @@ export default function Searchbar() {
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl pl-9 pr-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
             />
-            <Button onClick={handleSearch} className={"rounded-none bg-black text-whtie"}>
+            <Button onClick={handleSearch} className={"rounded-md bg-amber-500 hover:bg-amber-400 text-[#0d1f3c]"}>
               Search
             </Button>
           </div>

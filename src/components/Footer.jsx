@@ -10,10 +10,10 @@ const Footer = () => {
       <div className="pointer-events-none absolute -left-16 bottom-16 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(77,220,180,0.08)_0%,transparent_70%)]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-10 pt-16">
-        <div className="grid grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 text-center md:text-left gap-10">
           {/* Brand */}
           <div>
-            <p className="mb-1.5 flex items-center gap-2 text-xl font-bold tracking-tight text-white">StudyNook</p>
+            <p className="mb-1.5 flex justify-center md:justify-start items-center gap-2 text-xl font-bold tracking-tight text-white text-center md:text-left">StudyNook</p>
 
             <p className="mt-3.5 text-sm font-light leading-relaxed text-[rgba(232,237,245,0.55)]">
               A secure, user-friendly library management platform. Add study rooms, book available spaces, and manage your schedule in one organized environment.
@@ -23,9 +23,9 @@ const Footer = () => {
           {/* Navigate */}
           <div>
             <p className="mb-5 text-[11px] font-semibold uppercase tracking-[2px] text-[rgba(232,237,245,0.35)]">Useful Links</p>
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col  gap-3">
               {["Rooms", "Add Room", "My Listings", "My Bookings"].map((link) => (
-                <li key={link} className="group flex cursor-pointer items-center gap-2 text-sm text-[rgba(232,237,245,0.65)] transition-colors hover:text-white">
+                <li key={link} className="group flex justify-center md:justify-start cursor-pointer items-center gap-2 text-sm text-[rgba(232,237,245,0.65)] transition-colors hover:text-white">
                   <span className="h-px w-3.5 bg-[rgba(99,160,255,0.4)] transition-all duration-300 group-hover:w-5 group-hover:bg-[#63a0ff]" />
                   {link}
                 </li>
@@ -36,13 +36,13 @@ const Footer = () => {
           {/* Contact */}
           <div>
             <p className="mb-5 text-[11px] font-semibold uppercase tracking-[2px] text-[rgba(232,237,245,0.35)]">Contact</p>
-            <div className="flex flex-col gap-3.5">
+            <div className="flex flex-col  gap-3.5">
               {[
                 { Icon: FaRegEnvelope, label: "studynook@gmail.com" },
                 { Icon: FaPhoneAlt, label: "01954 844 656" },
               ].map(({ Icon, label }) => (
-                <div key={label} className="flex items-center gap-2.5 text-sm text-[rgba(232,237,245,0.65)]">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[rgba(99,160,255,0.2)] bg-[rgba(99,160,255,0.1)] text-sm">
+                <div key={label} className="flex items-center justify-center md:justify-start gap-2.5 text-sm text-[rgba(232,237,245,0.65)]">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center md:justify-left rounded-lg border border-[rgba(99,160,255,0.2)] bg-[rgba(99,160,255,0.1)] text-sm">
                     <Icon className="text-base" />
                   </span>
                   {label}

@@ -7,6 +7,15 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
+const amenitiesList = [
+  { id: "whiteboard", label: "Whiteboard" },
+  { id: "projector", label: "Projector" },
+  { id: "wifi", label: "Wi-Fi" },
+  { id: "power-outlets", label: "Power Outlets" },
+  { id: "quiet-zone", label: "Quiet Zone" },
+  { id: "air-conditioning", label: "Air Conditioning" },
+];
+
 const EditModal = ({ room }) => {
   const router = useRouter();
   const { _id, description, imageUrl, capacity, rate, floor, roomName } = room;
@@ -67,171 +76,133 @@ const EditModal = ({ room }) => {
 
   return (
     <Modal>
-      <Button className="font-body flex-1 rounded-none bg-transparent text-[#d4a853] border border-[#d4a853] text-[0.65rem] tracking-[0.2em] uppercase">Edit Room</Button>
+      <Button className="flex-1 rounded-xl bg-transparent text-amber-400 border border-amber-400 text-xs tracking-widest uppercase px-4 py-2 hover:bg-amber-400/10 transition-colors">Edit Room</Button>
       <Modal.Backdrop>
         <Modal.Container placement="auto">
-          <Modal.Dialog className="sm:max-w-3xl bg-[#0d1f3c] rounded-none">
-            <Modal.CloseTrigger />
-            <Modal.Header>
-              <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
-                <FaRegEdit />
-              </Modal.Icon>
-              <Modal.Heading className="text-center text-2xl font-semibold text-white">Edit Room</Modal.Heading>
+          <Modal.Dialog className="w-full sm:max-w-2xl bg-[#0d1f3c] rounded-2xl border border-white/10 mx-4 sm:mx-auto">
+            <Modal.CloseTrigger className="text-slate-400 hover:text-white" />
+
+            {/* Modal Header */}
+            <Modal.Header className="px-6 pt-6 pb-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                  <FaRegEdit size={16} />
+                </div>
+                <Modal.Heading className="text-xl font-semibold text-white">Edit Room</Modal.Heading>
+              </div>
             </Modal.Header>
-            <Modal.Body className="p-6">
-              <Surface variant="default">
-                <Card className=" rounded-none bg-[#0d1f3c]">
-                  <form onSubmit={onSubmit} className="p-10 space-y-8 ">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {/* Room Name */}
-                      <div className="md:col-span-2">
-                        <TextField name="roomName" isRequired defaultValue={roomName}>
-                          <Label className="text-white">Room Name</Label>
-                          <Input placeholder="Enter the room name" className="rounded-none" />
-                          <FieldError />
-                        </TextField>
-                      </div>
 
-                      {/* Floor */}
-                      <TextField name="floor" type="number" isRequired defaultValue={floor}>
-                        <Label className="text-white">Floor</Label>
-                        <Input placeholder="Enter the floor number" className="rounded-none" />
-                        <FieldError />
+            <Modal.Body className="px-6 py-6">
+              <form onSubmit={onSubmit} className="flex flex-col gap-6">
+                {/* Basic Info */}
+                <div>
+                  <p className="text-slate-400 text-xs tracking-widest uppercase mb-4 pb-3 border-b border-white/10">Basic Information</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="sm:col-span-2">
+                      <TextField name="roomName" isRequired defaultValue={roomName}>
+                        <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Room Name</Label>
+                        <Input
+                          placeholder="e.g. Digital Learning Room"
+                          className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                        />
+                        <FieldError className="text-red-400 text-xs mt-1" />
                       </TextField>
-
-                      {/* Hourly Rate */}
-                      <TextField name="rate" type="number" isRequired defaultValue={rate}>
-                        <Label className="text-white">Hourly Rate (USD)</Label>
-                        <Input type="number" placeholder="Enter the hourly rate" className="rounded-none" />
-                        <FieldError />
-                      </TextField>
-
-                      {/* Capacity */}
-                      <div className="md:col-span-2">
-                        <TextField name="capacity" type="number" isRequired defaultValue={capacity}>
-                          <Label className="text-white">Capacity</Label>
-                          <Input placeholder="Enter the number of people" className="rounded-none" />
-                          <FieldError />
-                        </TextField>
-                      </div>
-
-                      {/* Image URL - Removed preview */}
-                      <div className="md:col-span-2">
-                        <TextField name="imageUrl" isRequired defaultValue={imageUrl}>
-                          <Label className="text-white">Image URL</Label>
-                          <Input type="url" placeholder="https://example.com/library-room.jpg" className="rounded-none" />
-                          <FieldError />
-                        </TextField>
-                      </div>
-
-                      {/* Description */}
-                      <div className="md:col-span-2">
-                        <TextField name="description" isRequired defaultValue={description}>
-                          <Label className="text-white">Description</Label>
-                          <TextArea placeholder="Describe the room details..." className="rounded-none" />
-                          <FieldError />
-                        </TextField>
-                      </div>
                     </div>
 
-                    <div className="">
-                      <Label className="text-white mb-3">Amenities</Label>
+                    <TextField name="floor" type="number" isRequired defaultValue={floor}>
+                      <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Floor</Label>
+                      <Input
+                        placeholder="e.g. 3"
+                        className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                      />
+                      <FieldError className="text-red-400 text-xs mt-1" />
+                    </TextField>
 
-                      <div className="border-t border-gray-300 my-4"></div>
+                    <TextField name="rate" type="number" isRequired defaultValue={rate}>
+                      <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Hourly Rate (USD)</Label>
+                      <Input
+                        placeholder="e.g. 25"
+                        className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                      />
+                      <FieldError className="text-red-400 text-xs mt-1" />
+                    </TextField>
 
-                      <div className="grid grid-cols-3 gap-1.5">
-                        <div className="p-1.5 bg-blue-950">
-                          <Checkbox id="whiteboard" onChange={(checked) => handleAmenityChange("Whiteboard", checked)}>
-                            <Checkbox.Control>
-                              <Checkbox.Indicator />
-                            </Checkbox.Control>
-                            <Checkbox.Content>
-                              <Label className="text-white" htmlFor="whiteboard">
-                                Whiteboard
-                              </Label>
-                            </Checkbox.Content>
-                          </Checkbox>
-                        </div>
-
-                        <div className="p-1.5 bg-blue-950">
-                          <Checkbox id="projector" onChange={(checked) => handleAmenityChange("Projector", checked)}>
-                            <Checkbox.Control>
-                              <Checkbox.Indicator />
-                            </Checkbox.Control>
-                            <Checkbox.Content>
-                              <Label className="text-white" htmlFor="projector">
-                                Projector
-                              </Label>
-                            </Checkbox.Content>
-                          </Checkbox>
-                        </div>
-
-                        <div className="p-1.5 bg-blue-950">
-                          <Checkbox id="wifi" onChange={(checked) => handleAmenityChange("Wi-Fi", checked)}>
-                            <Checkbox.Control>
-                              <Checkbox.Indicator />
-                            </Checkbox.Control>
-                            <Checkbox.Content>
-                              <Label className="text-white" htmlFor="wifi">
-                                Wi-Fi
-                              </Label>
-                            </Checkbox.Content>
-                          </Checkbox>
-                        </div>
-
-                        <div className="p-1.5 bg-blue-950">
-                          <Checkbox id="power-outlets" onChange={(checked) => handleAmenityChange("Power Outlets", checked)}>
-                            <Checkbox.Control>
-                              <Checkbox.Indicator />
-                            </Checkbox.Control>
-                            <Checkbox.Content>
-                              <Label className="text-white" htmlFor="power-outlets">
-                                Power Outlets
-                              </Label>
-                            </Checkbox.Content>
-                          </Checkbox>
-                        </div>
-
-                        <div className="p-1.5 bg-blue-950">
-                          <Checkbox id="quiet-zone" onChange={(checked) => handleAmenityChange("Quiet Zone", checked)}>
-                            <Checkbox.Control>
-                              <Checkbox.Indicator />
-                            </Checkbox.Control>
-                            <Checkbox.Content>
-                              <Label className="text-white" htmlFor="quiet-zone">
-                                Quiet Zone
-                              </Label>
-                            </Checkbox.Content>
-                          </Checkbox>
-                        </div>
-
-                        <div className="p-1.5 bg-blue-950">
-                          <Checkbox id="air-conditioning" onChange={(checked) => handleAmenityChange("Air Conditioning", checked)}>
-                            <Checkbox.Control>
-                              <Checkbox.Indicator />
-                            </Checkbox.Control>
-                            <Checkbox.Content>
-                              <Label className="text-white" htmlFor="air-conditioning">
-                                Air Conditioning
-                              </Label>
-                            </Checkbox.Content>
-                          </Checkbox>
-                        </div>
-                      </div>
+                    <div className="sm:col-span-2">
+                      <TextField name="capacity" type="number" isRequired defaultValue={capacity}>
+                        <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Capacity (people)</Label>
+                        <Input
+                          placeholder="e.g. 10"
+                          className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                        />
+                        <FieldError className="text-red-400 text-xs mt-1" />
+                      </TextField>
                     </div>
 
-                    {/* Buttons */}
-                    <Modal.Footer>
-                      <Button slot="close" className="text-[#0d1f3c] bg-white">
-                        Cancel
-                      </Button>
-                      <Button type="submit" slot="close" className=" text-[#0d1f3c] bg-white ">
-                        Update Room
-                      </Button>
-                    </Modal.Footer>
-                  </form>
-                </Card>
-              </Surface>
+                    <div className="sm:col-span-2">
+                      <TextField name="imageUrl" isRequired defaultValue={imageUrl}>
+                        <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Image URL</Label>
+                        <Input
+                          type="url"
+                          placeholder="https://example.com/room.jpg"
+                          className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                        />
+                        <FieldError className="text-red-400 text-xs mt-1" />
+                      </TextField>
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <TextField name="description" isRequired defaultValue={description}>
+                        <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Description</Label>
+                        <TextArea
+                          placeholder="Describe the room..."
+                          rows={3}
+                          className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors resize-none"
+                        />
+                        <FieldError className="text-red-400 text-xs mt-1" />
+                      </TextField>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Amenities */}
+                <div>
+                  <p className="text-slate-400 text-xs tracking-widest uppercase mb-4 pb-3 border-b border-white/10">Amenities</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    {amenitiesList.map(({ id, label }) => {
+                      const checked = amenities?.includes(label);
+                      return (
+                        <div
+                          key={id}
+                          className={`flex items-center gap-3 p-3 rounded-xl border transition-colors cursor-pointer ${
+                            checked ? "border-amber-500 bg-amber-500/10" : "border-[#1e3a5f] bg-[#162d4a] hover:border-slate-500"
+                          }`}
+                        >
+                          <Checkbox id={id} isSelected={checked} onChange={(isChecked) => handleAmenityChange(label, isChecked)}>
+                            <Checkbox.Control>
+                              <Checkbox.Indicator />
+                            </Checkbox.Control>
+                            <Checkbox.Content>
+                              <Label className="text-white text-sm cursor-pointer" htmlFor={id}>
+                                {label}
+                              </Label>
+                            </Checkbox.Content>
+                          </Checkbox>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Footer buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-white/10">
+                  <Button slot="close" className="flex-1 bg-[#162d4a] hover:bg-[#1e3a5f] text-slate-300 text-sm font-medium py-2.5 rounded-xl border border-[#1e3a5f] transition-colors">
+                    Cancel
+                  </Button>
+                  <Button type="submit" slot="close" className="flex-1 bg-amber-500 hover:bg-amber-400 text-[#0d1f3c] text-sm font-semibold py-2.5 rounded-xl transition-colors">
+                    Update Room
+                  </Button>
+                </div>
+              </form>
             </Modal.Body>
           </Modal.Dialog>
         </Modal.Container>

@@ -57,8 +57,8 @@ const AddRoomPage = () => {
     <div className="max-w-4xl mx-auto my-10 px-4">
       {/* Page header */}
       <div className="mb-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-white">Add Room</h1>
-        <p className="text-slate-400 text-sm mt-1">Fill in the details below to list a new room.</p>
+        <h1 className="text-3xl sm:text-4xl font-bold text-blue-950">Add Room</h1>
+        <p className="text-slate-700 text-sm mt-1">Fill in the details below to list a new room.</p>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-6">

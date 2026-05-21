@@ -23,9 +23,11 @@ const RoomPage = async ({ searchParams }) => {
     <div className="container mx-auto my-10">
       <div>
         <h1 className="text-4xl font-bold text-center mb-6">All Room</h1>
-        <div className=" flex gap-1.5">
-          <Searchbar />
-          <div className="grid grid-cols-3 gap-3">
+        <div className="flex flex-col lg:flex-row gap-4">
+          <div className="w-full lg:w-auto">
+            <Searchbar />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 flex-1 px-4 md:px-0">
             {rooms.map((r) => (
               <RoomCard key={r._id} r={r} />
             ))}

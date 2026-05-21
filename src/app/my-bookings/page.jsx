@@ -60,7 +60,7 @@ const MyBookingsPage = async () => {
                       {String(b.bookingStartHour).padStart(2, "0")}:00 – {String(b.bookingEndHour).padStart(2, "0")}:00
                     </td>
                     <td className="px-4 py-4 text-sm font-medium text-white">${b.price}</td>
-                    <td className="px-4 py-4 text-sm text-slate-300">{b.roomStatus}</td>
+                    <td className={`px-4 py-4 text-sm ${b.roomStatus == "Cancelled" ? "text-red-500" : "text-green-600"}`}>{b.roomStatus}</td>
                     <td className="px-4 py-4">
                       <CancelModal b={b} user={user} />
                     </td>
