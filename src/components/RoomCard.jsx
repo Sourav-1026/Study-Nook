@@ -1,12 +1,21 @@
+"use client";
+
 import { Button } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { motion } from "framer-motion";
 
 const RoomCard = ({ r }) => {
   return (
-    <div className="rounded-xl overflow-hidden flex flex-col border border-white/10 shadow-xl" style={{ backgroundColor: "#0d1f3c" }} key={r._id}>
+    <motion.div
+      className="rounded-xl overflow-hidden flex flex-col border border-white/10 shadow-xl"
+      style={{ backgroundColor: "#0d1f3c" }}
+      key={r._id}
+      whileHover={{ y: -8, scale: 1.02, boxShadow: "0px 20px 40px rgba(0,0,0,0.4)" }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
       {/* Image with overlay gradient */}
       <div className="relative">
         <Image src={r.imageUrl} alt={r.roomName} width={400} height={400} className="w-full h-52 object-cover" />
@@ -40,13 +49,15 @@ const RoomCard = ({ r }) => {
 
         {/* Button */}
         <Link href={`/rooms/${r._id}`} className="mt-4 block">
-          <Button className="w-full rounded-lg bg-amber-400 text-[#0d1f3c] font-semibold hover:bg-amber-300 transition-colors flex items-center justify-center gap-2">
-            View Details
-            <FaArrowRightLong />
-          </Button>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button className="w-full rounded-lg bg-amber-400 text-[#0d1f3c] font-semibold hover:bg-amber-300 transition-colors flex items-center justify-center gap-2">
+              View Details
+              <FaArrowRightLong />
+            </Button>
+          </motion.div>
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
