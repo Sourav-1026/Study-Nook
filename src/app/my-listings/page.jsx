@@ -24,7 +24,7 @@ const MyListingPage = async () => {
 
   return (
     <div className="max-w-7xl mx-auto my-10">
-      <h1>This is my listing page</h1>
+      <h1 className="text-4xl text-center font-bold mb-6">My Listings</h1>
       <div className="grid grid-cols-3 gap-3">
         {listingsRoom.map((r, ind) => (
           <RoomCard key={ind} r={r} />

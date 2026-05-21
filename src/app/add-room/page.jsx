@@ -1,42 +1,38 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { FieldError, Input, Label, ListBox, TextField, Select, TextArea, Button, Card, SelectItem, Checkbox } from "@heroui/react";
+import { FieldError, Input, Label, TextField, TextArea, Button, Card, Checkbox } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
+const amenitiesList = [
+  { id: "whiteboard", label: "Whiteboard", icon: "⬜" },
+  { id: "projector", label: "Projector", icon: "📽️" },
+  { id: "wifi", label: "Wi-Fi", icon: "📶" },
+  { id: "power-outlets", label: "Power Outlets", icon: "🔌" },
+  { id: "quiet-zone", label: "Quiet Zone", icon: "🔇" },
+  { id: "air-conditioning", label: "Air Conditioning", icon: "❄️" },
+];
+
 const AddRoomPage = () => {
   const { data: session } = authClient.useSession();
   const user = session?.user;
-  console.log(user);
-
   const [amenities, setAmenities] = useState([]);
+  const router = useRouter();
 
   const handleAmenityChange = (value, checked) => {
     setAmenities((prev) => (checked ? [...prev, value] : prev.filter((a) => a !== value)));
   };
 
-  const router = useRouter();
-
   const onSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData(e.currentTarget);
-
     const room = Object.fromEntries(formData.entries());
-
-    const finalRoom = {
-      ...room,
-      amenities: [...amenities],
-      userId: user?.id,
-    };
-
-    console.log(finalRoom);
+    const finalRoom = { ...room, amenities: [...amenities], userId: user?.id };
 
     try {
       const { data: tokenData } = await authClient.token();
-      console.log(tokenData);
       const res = await fetch("http://localhost:5000/rooms", {
         method: "POST",
         headers: {
@@ -45,20 +41,12 @@ const AddRoomPage = () => {
         },
         body: JSON.stringify(finalRoom),
       });
-
       const data = await res.json();
-
       if (data) {
-        console.log("Room added successfully!", data.insertedId);
-        toast.success("Room Added Successfully", {
-          position: "top-center",
-        });
+        toast.success("Room Added Successfully", { position: "top-center" });
         router.push("/rooms");
-
-        // e.g. router.push("/rooms") or show a toast
       } else {
-        console.error("Failed to add room:", data.message);
-        toast.error("Failed to add room:", data.message);
+        toast.error("Failed to add room: " + data.message);
       }
     } catch (error) {
       console.error("Network error:", error);
@@ -66,155 +54,127 @@ const AddRoomPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto my-10">
-      <h1 className="text-5xl font-bold mb-6">Add Room</h1>
-      <Card className="border border-gray-300 rounded-none bg-[#0d1f3c]">
-        <form onSubmit={onSubmit} className="p-10 space-y-8 w-3xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="max-w-4xl mx-auto my-10 px-4">
+      {/* Page header */}
+      <div className="mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold text-white">Add Room</h1>
+        <p className="text-slate-400 text-sm mt-1">Fill in the details below to list a new room.</p>
+      </div>
+
+      <form onSubmit={onSubmit} className="space-y-6">
+        {/* Section: Basic Info */}
+        <div className="bg-[#0d1f3c] rounded-2xl p-6 sm:p-8 border border-white/10">
+          <h2 className="text-white text-sm font-semibold tracking-widest uppercase mb-6 pb-3 border-b border-white/10">Basic Information</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* Room Name */}
-            <div className="md:col-span-2">
+            <div className="sm:col-span-2">
               <TextField name="roomName" isRequired>
-                <Label className="text-white">Room Name</Label>
-                <Input placeholder="Enter the room name" className="rounded-none" />
-                <FieldError />
+                <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Room Name</Label>
+                <Input
+                  placeholder="e.g. Digital Learning Room"
+                  className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                />
+                <FieldError className="text-red-400 text-xs mt-1" />
               </TextField>
             </div>
 
             {/* Floor */}
             <TextField name="floor" type="number" isRequired>
-              <Label className="text-white">Floor</Label>
-              <Input placeholder="Enter the floor number" className="rounded-none" />
-              <FieldError />
+              <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Floor</Label>
+              <Input
+                placeholder="e.g. 3"
+                className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+              />
+              <FieldError className="text-red-400 text-xs mt-1" />
             </TextField>
 
             {/* Hourly Rate */}
             <TextField name="rate" type="number" isRequired>
-              <Label className="text-white">Hourly Rate (USD)</Label>
-              <Input type="number" placeholder="Enter the hourly rate" className="rounded-none" />
-              <FieldError />
+              <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Hourly Rate (USD)</Label>
+              <Input
+                placeholder="e.g. 25"
+                className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+              />
+              <FieldError className="text-red-400 text-xs mt-1" />
             </TextField>
 
             {/* Capacity */}
-            <div className="md:col-span-2">
+            <div className="sm:col-span-2">
               <TextField name="capacity" type="number" isRequired>
-                <Label className="text-white">Capacity</Label>
-                <Input placeholder="Enter the number of people" className="rounded-none" />
-                <FieldError />
+                <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Capacity (people)</Label>
+                <Input
+                  placeholder="e.g. 10"
+                  className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                />
+                <FieldError className="text-red-400 text-xs mt-1" />
               </TextField>
             </div>
 
-            {/* Image URL - Removed preview */}
-            <div className="md:col-span-2">
+            {/* Image URL */}
+            <div className="sm:col-span-2">
               <TextField name="imageUrl" isRequired>
-                <Label className="text-white">Image URL</Label>
-                <Input type="url" placeholder="https://example.com/library-room.jpg" className="rounded-none" />
-                <FieldError />
+                <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Image URL</Label>
+                <Input
+                  type="url"
+                  placeholder="https://example.com/room.jpg"
+                  className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                />
+                <FieldError className="text-red-400 text-xs mt-1" />
               </TextField>
             </div>
 
             {/* Description */}
-            <div className="md:col-span-2">
+            <div className="sm:col-span-2">
               <TextField name="description" isRequired>
-                <Label className="text-white">Description</Label>
-                <TextArea placeholder="Describe the room details..." className="rounded-none" />
-                <FieldError />
+                <Label className="text-slate-400 text-xs tracking-widest uppercase mb-1.5 block">Description</Label>
+                <TextArea
+                  placeholder="Describe the room — layout, features, ideal use..."
+                  rows={4}
+                  className="w-full bg-[#162d4a] border border-[#1e3a5f] rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors resize-none"
+                />
+                <FieldError className="text-red-400 text-xs mt-1" />
               </TextField>
             </div>
           </div>
+        </div>
 
-          <div className="">
-            <Label className="text-white mb-3">Amenities</Label>
-
-            <div className="border-t border-gray-300 my-4"></div>
-
-            <div className="grid grid-cols-3 gap-1.5">
-              <div className="p-1.5 bg-blue-950">
-                <Checkbox id="whiteboard" onChange={(checked) => handleAmenityChange("Whiteboard", checked)}>
+        {/* Section: Amenities */}
+        <div className="bg-[#0d1f3c] rounded-2xl p-6 sm:p-8 border border-white/10">
+          <h2 className="text-white text-sm font-semibold tracking-widest uppercase mb-1">Amenities</h2>
+          <p className="text-slate-400 text-xs mb-6 pb-3 border-b border-white/10">Select all that apply to this room.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            {amenitiesList.map(({ id, label }) => (
+              <div
+                key={id}
+                className={`flex items-center gap-3 p-3 rounded-xl border transition-colors cursor-pointer ${
+                  amenities.includes(label) ? "border-amber-500 bg-amber-500/10" : "border-[#1e3a5f] bg-[#162d4a] hover:border-slate-500"
+                }`}
+              >
+                <Checkbox id={id} isSelected={amenities.includes(label)} onChange={(checked) => handleAmenityChange(label, checked)}>
                   <Checkbox.Control>
                     <Checkbox.Indicator />
                   </Checkbox.Control>
                   <Checkbox.Content>
-                    <Label className="text-white" htmlFor="whiteboard">
-                      Whiteboard
+                    <Label className="text-white text-sm cursor-pointer" htmlFor={id}>
+                      {label}
                     </Label>
                   </Checkbox.Content>
                 </Checkbox>
               </div>
-
-              <div className="p-1.5 bg-blue-950">
-                <Checkbox id="projector" onChange={(checked) => handleAmenityChange("Projector", checked)}>
-                  <Checkbox.Control>
-                    <Checkbox.Indicator />
-                  </Checkbox.Control>
-                  <Checkbox.Content>
-                    <Label className="text-white" htmlFor="projector">
-                      Projector
-                    </Label>
-                  </Checkbox.Content>
-                </Checkbox>
-              </div>
-
-              <div className="p-1.5 bg-blue-950">
-                <Checkbox id="wifi" onChange={(checked) => handleAmenityChange("Wi-Fi", checked)}>
-                  <Checkbox.Control>
-                    <Checkbox.Indicator />
-                  </Checkbox.Control>
-                  <Checkbox.Content>
-                    <Label className="text-white" htmlFor="wifi">
-                      Wi-Fi
-                    </Label>
-                  </Checkbox.Content>
-                </Checkbox>
-              </div>
-
-              <div className="p-1.5 bg-blue-950">
-                <Checkbox id="power-outlets" onChange={(checked) => handleAmenityChange("Power Outlets", checked)}>
-                  <Checkbox.Control>
-                    <Checkbox.Indicator />
-                  </Checkbox.Control>
-                  <Checkbox.Content>
-                    <Label className="text-white" htmlFor="power-outlets">
-                      Power Outlets
-                    </Label>
-                  </Checkbox.Content>
-                </Checkbox>
-              </div>
-
-              <div className="p-1.5 bg-blue-950">
-                <Checkbox id="quiet-zone" onChange={(checked) => handleAmenityChange("Quiet Zone", checked)}>
-                  <Checkbox.Control>
-                    <Checkbox.Indicator />
-                  </Checkbox.Control>
-                  <Checkbox.Content>
-                    <Label className="text-white" htmlFor="quiet-zone">
-                      Quiet Zone
-                    </Label>
-                  </Checkbox.Content>
-                </Checkbox>
-              </div>
-
-              <div className="p-1.5 bg-blue-950">
-                <Checkbox id="air-conditioning" onChange={(checked) => handleAmenityChange("Air Conditioning", checked)}>
-                  <Checkbox.Control>
-                    <Checkbox.Indicator />
-                  </Checkbox.Control>
-                  <Checkbox.Content>
-                    <Label className="text-white" htmlFor="air-conditioning">
-                      Air Conditioning
-                    </Label>
-                  </Checkbox.Content>
-                </Checkbox>
-              </div>
-            </div>
+            ))}
           </div>
+          {amenities.length > 0 && (
+            <p className="text-amber-400 text-xs mt-4">
+              {amenities.length} amenit{amenities.length === 1 ? "y" : "ies"} selected
+            </p>
+          )}
+        </div>
 
-          {/* Buttons */}
-
-          <Button type="submit" variant="ghost" className=" rounded-none w-full bg-transparent text-white border border-white">
-            Add Room
-          </Button>
-        </form>
-      </Card>
+        {/* Submit */}
+        <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-400 text-[#0d1f3c] font-semibold text-sm py-3 rounded-xl transition-colors">
+          Add Room
+        </Button>
+      </form>
     </div>
   );
 };
