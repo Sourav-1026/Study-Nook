@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📚 StudyNook
 
-## Getting Started
+**StudyNook** is a full-stack web application that allows users to browse, list, and book private study rooms. Whether you're looking for a quiet space to focus or want to earn by sharing your own room, StudyNook makes it seamless.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 1. 🔐 Authentication (Email & Google)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Users can sign up and log in using their email and password, or instantly access the platform via **Google OAuth** — making onboarding fast and frictionless.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. 🏠 Room Listings
 
-## Learn More
+Browse a wide variety of study rooms listed by other users. Each room displays key details like floor, capacity, hourly rate, and available amenities to help you find the perfect space.
 
-To learn more about Next.js, take a look at the following resources:
+### 3. ➕ Add Your Own Room
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Have a space to share? Users can list their own study rooms with details such as name, description, images, rate, floor, capacity, and amenities — and start earning from bookings.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. 📅 Room Booking System
 
-## Deploy on Vercel
+Book any available study room by selecting your desired time slot. The platform handles scheduling under the hood to ensure a smooth booking experience.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5. ⚠️ Booking Conflict Detection
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+A smart conflict detection system on the backend prevents double bookings. If a time slot is already taken, users are notified immediately — keeping all reservations clean and reliable.
+
+### 6. ❌ Booking Cancellation
+
+Plans changed? Users can cancel their existing bookings with ease, freeing up the room for others to reserve.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** Next.js, Tailwind CSS, Framer Motion, Hero Ui
+- **Backend:** Node.js / Express (or your backend here)
+- **Auth:** Better Auth (Email + Google OAuth)
+- **Database:** MongoDB (or your DB here)
+
+---
+
+## 🌐 Live Demo
+
+https://study-nook-pied.vercel.app
