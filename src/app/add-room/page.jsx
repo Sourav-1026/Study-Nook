@@ -7,12 +7,12 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 const amenitiesList = [
-  { id: "whiteboard", label: "Whiteboard", icon: "⬜" },
-  { id: "projector", label: "Projector", icon: "📽️" },
-  { id: "wifi", label: "Wi-Fi", icon: "📶" },
-  { id: "power-outlets", label: "Power Outlets", icon: "🔌" },
-  { id: "quiet-zone", label: "Quiet Zone", icon: "🔇" },
-  { id: "air-conditioning", label: "Air Conditioning", icon: "❄️" },
+  { id: "whiteboard", label: "Whiteboard" },
+  { id: "projector", label: "Projector" },
+  { id: "wifi", label: "Wi-Fi" },
+  { id: "power-outlets", label: "Power Outlets" },
+  { id: "quiet-zone", label: "Quiet Zone" },
+  { id: "air-conditioning", label: "Air Conditioning" },
 ];
 
 const AddRoomPage = () => {
@@ -33,7 +33,7 @@ const AddRoomPage = () => {
 
     try {
       const { data: tokenData } = await authClient.token();
-      const res = await fetch("http://localhost:5000/rooms", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

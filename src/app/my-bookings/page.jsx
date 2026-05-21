@@ -3,6 +3,14 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Image from "next/image";
 import CancelModal from "@/components/CancelModal";
+import Link from "next/link";
+import { Button } from "@heroui/react";
+import { BsCalendarX } from "react-icons/bs";
+
+export const metadata = {
+  title: "StudyNook | My Bookings",
+  description: "...",
+};
 
 const MyBookingsPage = async () => {
   const session = await auth.api.getSession({
@@ -15,7 +23,7 @@ const MyBookingsPage = async () => {
     headers: await headers(),
   });
 
-  const res = await fetch(`http://localhost:5000/bookings/${user?.id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/${user?.id}`, {
     headers: {
       authorization: `Bearer ${token}`,
     },
@@ -28,8 +36,15 @@ const MyBookingsPage = async () => {
       <p className="text-sm text-gray-500 mt-3 text-center">Manage your upcoming and past room reservations.</p>
 
       {bookings.length === 0 ? (
-        <div className="mt-6">
-          <p>You have no bookings yet.</p>
+        <div className="container mx-auto mt-6 flex flex-col justify-center items-center py-20 gap-4">
+          <div className="bg-[#0d1f3c] p-6 rounded-full">
+            <BsCalendarX className="text-amber-400 text-5xl" />
+          </div>
+          <h2 className="text-2xl font-bold text-[#0d1f3c]">No Bookings Yet</h2>
+          <p className="text-gray-500 text-sm">You haven't made any room bookings. Start by exploring available rooms.</p>
+          <Link href="/rooms">
+            <Button className="bg-[#0d1f3c] text-white hover:bg-amber-400 hover:text-[#0d1f3c] font-semibold px-6 rounded-lg transition-colors">Browse Rooms</Button>
+          </Link>
         </div>
       ) : (
         <>

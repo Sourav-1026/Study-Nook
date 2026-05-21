@@ -1,8 +1,29 @@
+"use client";
+
+import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 import React from "react";
 import { FaFacebookSquare, FaLinkedin, FaPhoneAlt } from "react-icons/fa";
 import { FaSquareInstagram, FaSquareXTwitter, FaRegEnvelope } from "react-icons/fa6";
 
+const linkMap = {
+  Rooms: "/rooms",
+  "Add Room": "/add-room",
+  "My Listings": "/my-listings",
+  "My Bookings": "/my-bookings",
+};
+
 const Footer = () => {
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  console.log(user);
+
+  const allLinks = ["Rooms", "Add Room", "My Listings", "My Bookings"];
+  const publicLinks = ["Rooms"];
+  const privateLinks = ["Add Room", "My Listings", "My Bookings"];
+
+  const visibleLinks = user ? allLinks : publicLinks;
+
   return (
     <footer className="relative overflow-hidden bg-[#0d1f3c] text-[#e8edf5]">
       {/* Glow effects */}
@@ -24,10 +45,10 @@ const Footer = () => {
           <div>
             <p className="mb-5 text-[11px] font-semibold uppercase tracking-[2px] text-[rgba(232,237,245,0.35)]">Useful Links</p>
             <ul className="flex flex-col  gap-3">
-              {["Rooms", "Add Room", "My Listings", "My Bookings"].map((link) => (
+              {visibleLinks.map((link) => (
                 <li key={link} className="group flex justify-center md:justify-start cursor-pointer items-center gap-2 text-sm text-[rgba(232,237,245,0.65)] transition-colors hover:text-white">
                   <span className="h-px w-3.5 bg-[rgba(99,160,255,0.4)] transition-all duration-300 group-hover:w-5 group-hover:bg-[#63a0ff]" />
-                  {link}
+                  <Link href={linkMap[link]}>{link}</Link>
                 </li>
               ))}
             </ul>

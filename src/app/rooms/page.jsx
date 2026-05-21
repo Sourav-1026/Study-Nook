@@ -2,6 +2,11 @@ import RoomCard from "@/components/RoomCard";
 import Searchbar from "@/components/Searchbar";
 import React from "react";
 
+export const metadata = {
+  title: "StudyNook | Rooms",
+  description: "...",
+};
+
 const RoomPage = async ({ searchParams }) => {
   const sParams = await searchParams;
   console.log(sParams);
@@ -12,7 +17,7 @@ const RoomPage = async ({ searchParams }) => {
   if (sParams.minRate) params.set("minRate", sParams.minRate);
   if (sParams.maxRate) params.set("maxRate", sParams.maxRate);
 
-  const fetchUrl = `http://localhost:5000/rooms?${params.toString()}`;
+  const fetchUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/rooms?${params.toString()}`;
   console.log(fetchUrl);
   const res = await fetch(fetchUrl, { cache: "no-store" });
   const rooms = await res.json();

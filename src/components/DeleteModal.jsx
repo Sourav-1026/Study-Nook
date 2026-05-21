@@ -13,7 +13,7 @@ const DeleteModal = ({ room }) => {
   const handleDelete = async () => {
     const { data: tokenData } = await authClient.token();
     console.log(tokenData);
-    const res = await fetch(`http://localhost:5000/rooms/${_id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${_id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json",

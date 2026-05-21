@@ -56,7 +56,10 @@ const Navbar = () => {
           ) : (
             <>
               <Link href="/login">
-                <Button className="rounded-none bg-transparent text-[#0d1f3c] border border-[#0d1f3c]">Login</Button>
+                <Button className="rounded-none bg-transparent text-[#0d1f3c] border border-[#0d1f3c]">
+                  Login
+                  <MdLogin />
+                </Button>
               </Link>
               <Link href="/signup">
                 <Button className="rounded-none bg-[#0d1f3c] text-white">

@@ -6,39 +6,46 @@ import { FaArrowRightLong } from "react-icons/fa6";
 
 const RoomCard = ({ r }) => {
   return (
-    <div className="shadow-md rounded-md border border-gray-300 flex flex-col" key={r._id}>
-      <Image src={r.imageUrl} alt={r.roomName} width={400} height={400} className="w-full h-60 object-cover rounded-md" />
-
-      <div className="p-5 space-y-4 flex-1">
-        <p className="text-lg font-semibold">Room Name: {r.roomName}</p>
-        <p className="text-shadow-md">Description: {r.description}</p>
-        <div className="grid grid-cols-2 gap-2.5">
-          <div className="bg-blue-950 px-3">
-            <p className="text-lg font-semibold  text-white">Floor: {r.floor}</p>
-          </div>
-          <div className="bg-blue-950 px-3">
-            <p className="text-lg font-semibold text-white">Capacity: {r.capacity} people</p>
-          </div>
-        </div>
-        <p className="font-semibold">
-          Rate:
-          <span className="text-2xl font-semibold"> ${r.rate}</span>/hr
-        </p>
-        <p className="text-lg font-semibold">Amenities:</p>
-        <div className="flex flex-wrap gap-1.5 ">
-          {r.amenities.map((a, ind) => (
-            <div className="p-3 bg-blue-900 text-white rounded-md" key={ind}>
-              {a}
-            </div>
-          ))}
+    <div className="rounded-xl overflow-hidden flex flex-col border border-white/10 shadow-xl" style={{ backgroundColor: "#0d1f3c" }} key={r._id}>
+      {/* Image with overlay gradient */}
+      <div className="relative">
+        <Image src={r.imageUrl} alt={r.roomName} width={400} height={400} className="w-full h-52 object-cover" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#0d1f3c] to-transparent" />
+        {/* Floor & Capacity badges overlaid on image */}
+        <div className="absolute bottom-3 left-3 flex gap-2">
+          <span className="bg-white/10 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full border border-white/20">Floor {r.floor}</span>
+          <span className="bg-white/10 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full border border-white/20">{r.capacity} people</span>
         </div>
       </div>
-      <Link href={`/rooms/${r._id}`}>
-        <Button className="rounded none w-full bg-[#0d1f3c] mt-auto hover:bg-amber-400 hover:text-[#0d1f3c]">
-          View Details
-          <FaArrowRightLong />
-        </Button>
-      </Link>
+
+      {/* Content */}
+      <div className="p-5 space-y-3 flex-1 flex flex-col">
+        <h3 className="text-white text-lg font-bold tracking-tight">{r.roomName}</h3>
+        <p className="text-white/50 text-sm leading-relaxed line-clamp-2">{r.description}</p>
+
+        {/* Rate */}
+        <div className="flex items-end gap-1">
+          <span className="text-amber-400 text-2xl font-bold">${r.rate}</span>
+          <span className="text-white/40 text-sm mb-0.5">/hr</span>
+        </div>
+
+        {/* Amenities */}
+        <div className="flex flex-wrap gap-1.5 flex-1 content-start">
+          {r.amenities.map((a, ind) => (
+            <span key={ind} className="text-xs text-white/70 bg-white/10 border border-white/10 px-2.5 py-1 rounded-full">
+              {a}
+            </span>
+          ))}
+        </div>
+
+        {/* Button */}
+        <Link href={`/rooms/${r._id}`} className="mt-4 block">
+          <Button className="w-full rounded-lg bg-amber-400 text-[#0d1f3c] font-semibold hover:bg-amber-300 transition-colors flex items-center justify-center gap-2">
+            View Details
+            <FaArrowRightLong />
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };

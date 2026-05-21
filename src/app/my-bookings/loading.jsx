@@ -4,7 +4,7 @@ import React from "react";
 const Loading = () => {
   return (
     <div className="flex min-h-screen justify-center items-center gap-4">
-      <Spinner size="50" />
+      <Spinner size="lg" className="text-[#0d1f3c]" />
     </div>
   );
 };

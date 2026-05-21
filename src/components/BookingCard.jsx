@@ -23,6 +23,7 @@ const BookingCard = ({ room }) => {
   const [date, setDate] = useState(null);
   const [startHour, setStartHour] = useState(null);
   const [endHour, setEndHour] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   //   console.log(new Date(date));
   //   console.log(startHour, endHour);
@@ -33,39 +34,51 @@ const BookingCard = ({ room }) => {
   }, [startHour, endHour, rate]);
 
   const handleBooking = async () => {
-    const bookingData = {
-      userId: user?.id,
-      userEmail: user?.email,
-      userImage: user?.image,
-      userName: user?.name,
-      roomId: _id,
-      roomName,
-      price: totalCost,
-      roomImage: imageUrl,
-      roomCapacity: capacity,
-      roomFloor: floor,
-      roomAmenities: amenities,
-      bookingDate: new Date(date),
-      bookingStartHour: startHour,
-      bookingEndHour: endHour,
-      roomStatus: "Confirmed",
-    };
+    setIsLoading(true);
 
-    const { data: tokenData } = await authClient.token();
-    console.log(tokenData);
+    try {
+      const bookingData = {
+        userId: user?.id,
+        userEmail: user?.email,
+        userImage: user?.image,
+        userName: user?.name,
+        roomId: _id,
+        roomName,
+        price: totalCost,
+        roomImage: imageUrl,
+        roomCapacity: capacity,
+        roomFloor: floor,
+        roomAmenities: amenities,
+        bookingDate: new Date(date),
+        bookingStartHour: startHour,
+        bookingEndHour: endHour,
+        roomStatus: "Confirmed",
+      };
 
-    const res = await fetch("http://localhost:5000/bookings", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${tokenData?.token}`,
-      },
-      body: JSON.stringify(bookingData),
-    });
-    const data = await res.json();
-    // console.log(data);
-    if (data) {
+      const { data: tokenData } = await authClient.token();
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`,
+        },
+        body: JSON.stringify(bookingData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data?.message || "Booking failed. Please try again.");
+        return;
+      }
+
       toast.success("Room booked successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -173,7 +186,8 @@ const BookingCard = ({ room }) => {
 
         <Button
           onClick={handleBooking}
-          className="font-body block w-full py-4 text-center text-[0.7rem] tracking-[0.28em] uppercase font-medium bg-[#d4a853] text-[#1a1714] hover:bg-[#f7f4ef] hover:tracking-[0.35em] transition-all duration-300"
+          disabled={isLoading}
+          className="font-body block w-full  text-center text-[0.7rem] tracking-[0.28em] uppercase font-medium bg-[#d4a853] text-[#1a1714] hover:bg-[#f7f4ef] hover:tracking-[0.35em] transition-all duration-300"
         >
           Book Now
         </Button>

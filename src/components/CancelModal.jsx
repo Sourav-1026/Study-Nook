@@ -14,7 +14,7 @@ const CancelModal = ({ b }) => {
     const { data: tokenData } = await authClient.token();
     console.log(tokenData);
 
-    const res = await fetch(`http://localhost:5000/bookings/${b._id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/${b._id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",

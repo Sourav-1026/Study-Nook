@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import { FiLogOut } from "react-icons/fi";
 
 const AvatarDropdown = ({ user }) => {
   const router = useRouter();
@@ -113,8 +114,9 @@ const AvatarDropdown = ({ user }) => {
 
             {/* Logout */}
             <div className="border-t border-white/10 py-1">
-              <button onClick={handleLogOut} className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/5 transition-colors">
+              <button onClick={handleLogOut} className="w-full flex items-center gap-1.5 text-left px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/5 transition-colors">
                 Log Out
+                <FiLogOut />
               </button>
             </div>
           </div>
