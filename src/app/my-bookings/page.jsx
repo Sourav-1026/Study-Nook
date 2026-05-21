@@ -12,7 +12,15 @@ const MyBookingsPage = async () => {
 
   const user = session?.user;
 
-  const res = await fetch(`http://localhost:5000/bookings/${user?.id}`);
+  const { token } = await auth.api.getToken({
+    headers: await headers(),
+  });
+
+  const res = await fetch(`http://localhost:5000/bookings/${user?.id}`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
   const bookings = await res.json();
 
   //   const handleCancel = () => {};

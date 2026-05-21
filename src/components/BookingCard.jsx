@@ -16,7 +16,7 @@ const TIME_SLOTS = Array.from({ length: 13 }, (_, i) => {
 const BookingCard = ({ room }) => {
   const { data: session } = authClient.useSession();
   const user = session?.user;
-  console.log(user);
+  // console.log(user);
 
   const { _id, roomName, floor, capacity, rate, imageUrl, amenities } = room;
 
@@ -51,15 +51,19 @@ const BookingCard = ({ room }) => {
       roomStatus: "Confirmed",
     };
 
+    const { data: tokenData } = await authClient.token();
+    console.log(tokenData);
+
     const res = await fetch("http://localhost:5000/bookings", {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
       },
       body: JSON.stringify(bookingData),
     });
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
     if (data) {
       toast.success("Room booked successfully!");
     }

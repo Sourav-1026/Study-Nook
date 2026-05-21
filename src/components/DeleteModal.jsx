@@ -4,16 +4,20 @@ import React from "react";
 import { AlertDialog, Button } from "@heroui/react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const DeleteModal = ({ room }) => {
   const router = useRouter();
   const { _id, roomName } = room;
 
   const handleDelete = async () => {
+    const { data: tokenData } = await authClient.token();
+    console.log(tokenData);
     const res = await fetch(`http://localhost:5000/rooms/${_id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
       },
     });
 

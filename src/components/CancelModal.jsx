@@ -5,15 +5,20 @@ import { AlertDialog, Button } from "@heroui/react";
 import { toast } from "react-toastify";
 import { LiaMinusSolid } from "react-icons/lia";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const CancelModal = ({ b }) => {
   const router = useRouter();
 
   const handleCancel = async () => {
+    const { data: tokenData } = await authClient.token();
+    console.log(tokenData);
+
     const res = await fetch(`http://localhost:5000/bookings/${b._id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
       },
       body: JSON.stringify({ roomStatus: "Cancelled" }),
     });

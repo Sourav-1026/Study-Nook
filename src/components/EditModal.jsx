@@ -5,6 +5,7 @@ import { Button, Card, Checkbox, FieldError, Input, Label, Modal, Surface, TextA
 import { FaRegEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const EditModal = ({ room }) => {
   const router = useRouter();
@@ -33,10 +34,13 @@ const EditModal = ({ room }) => {
     console.log(finalRoom);
 
     try {
+      const { data: tokenData } = await authClient.token();
+      console.log(tokenData);
       const res = await fetch(`http://localhost:5000/rooms/${_id}`, {
         method: "PATCH",
         headers: {
           "content-type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`,
         },
         body: JSON.stringify(finalRoom),
       });
