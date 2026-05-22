@@ -14,8 +14,6 @@ const SignUpPage = () => {
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
 
-    console.log(user);
-
     const { data, error } = await authClient.signUp.email({
       email: user.email,
       password: user.password,
@@ -23,7 +21,10 @@ const SignUpPage = () => {
       image: user.image,
     });
 
-    console.log({ data, error });
+    if (error) {
+      toast.error(error.message || "Registration failed. Please try again.");
+      return;
+    }
 
     if (data) {
       toast.success("Registration successful! Please login.");
