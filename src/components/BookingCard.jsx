@@ -34,6 +34,19 @@ const BookingCard = ({ room }) => {
   }, [startHour, endHour, rate]);
 
   const handleBooking = async () => {
+    if (!date) {
+      toast.error("Please select a date");
+      return;
+    }
+    if (!startHour) {
+      toast.error("Please select a start time");
+      return;
+    }
+    if (!endHour) {
+      toast.error("Please select an end time");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -57,14 +70,17 @@ const BookingCard = ({ room }) => {
 
       const { data: tokenData } = await authClient.token();
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${tokenData?.token}`,
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/bookings`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${tokenData?.token}`,
+          },
+          body: JSON.stringify(bookingData),
         },
-        body: JSON.stringify(bookingData),
-      });
+      );
 
       const data = await res.json();
 
@@ -86,16 +102,22 @@ const BookingCard = ({ room }) => {
     <div className="lg:pt-2">
       <div className="sticky top-8 bg-[#1a1714] text-[#f7f4ef] p-8">
         {/* Rate */}
-        <p className="font-body text-[0.6rem] tracking-[0.22em] uppercase text-[#a09880] mb-1">Hourly Rate</p>
+        <p className="font-body text-[0.6rem] tracking-[0.22em] uppercase text-[#a09880] mb-1">
+          Hourly Rate
+        </p>
         <div className="flex items-end gap-1 mb-1">
-          <span className="font-display text-6xl font-normal leading-none text-[#f7f4ef]">${rate}</span>
+          <span className="font-display text-6xl font-normal leading-none text-[#f7f4ef]">
+            ${rate}
+          </span>
         </div>
 
         <div className="w-full h-px bg-white/10 mb-8 mt-4" />
 
         {/* Date */}
         <div className="flex flex-col gap-1 mb-5">
-          <label className="text-[0.6rem] tracking-[0.22em] uppercase text-[#a09880]">Date</label>
+          <label className="text-[0.6rem] tracking-[0.22em] uppercase text-[#a09880]">
+            Date
+          </label>
           <input
             type="date"
             min={new Date().toISOString().split("T")[0]}
@@ -109,7 +131,9 @@ const BookingCard = ({ room }) => {
         <div className="grid grid-cols-2 gap-4 mb-5">
           {/* Start Time */}
           <div className="flex flex-col gap-1">
-            <label className="text-[0.6rem] tracking-[0.22em] uppercase text-[#a09880]">Start Time</label>
+            <label className="text-[0.6rem] tracking-[0.22em] uppercase text-[#a09880]">
+              Start Time
+            </label>
             <select
               value={startHour ?? ""}
               onChange={(e) => {
@@ -123,7 +147,11 @@ const BookingCard = ({ room }) => {
                 08:00
               </option>
               {TIME_SLOTS.map((slot) => (
-                <option key={slot.value} value={slot.value} className="bg-[#1a1714] text-[#f7f4ef]">
+                <option
+                  key={slot.value}
+                  value={slot.value}
+                  className="bg-[#1a1714] text-[#f7f4ef]"
+                >
                   {slot.label}
                 </option>
               ))}
@@ -132,7 +160,9 @@ const BookingCard = ({ room }) => {
 
           {/* End Time */}
           <div className="flex flex-col gap-1">
-            <label className="text-[0.6rem] tracking-[0.22em] uppercase text-[#a09880]">End Time</label>
+            <label className="text-[0.6rem] tracking-[0.22em] uppercase text-[#a09880]">
+              End Time
+            </label>
             <select
               value={endHour ?? ""}
               disabled={!startHour}
@@ -142,8 +172,14 @@ const BookingCard = ({ room }) => {
               <option value="" disabled className="bg-[#1a1714]">
                 09:00
               </option>
-              {TIME_SLOTS.filter((s) => Number(s.value) > Number(startHour)).map((slot) => (
-                <option key={slot.value} value={slot.value} className="bg-[#1a1714] text-[#f7f4ef]">
+              {TIME_SLOTS.filter(
+                (s) => Number(s.value) > Number(startHour),
+              ).map((slot) => (
+                <option
+                  key={slot.value}
+                  value={slot.value}
+                  className="bg-[#1a1714] text-[#f7f4ef]"
+                >
                   {slot.label}
                 </option>
               ))}
@@ -154,14 +190,18 @@ const BookingCard = ({ room }) => {
         {/* Total Cost */}
         <div className="flex items-end justify-between mb-8">
           <div>
-            <p className="font-body text-[0.6rem] tracking-[0.22em] uppercase text-[#a09880] mb-1">Total Cost</p>
+            <p className="font-body text-[0.6rem] tracking-[0.22em] uppercase text-[#a09880] mb-1">
+              Total Cost
+            </p>
             {startHour && endHour && (
               <p className="font-body text-[0.65rem] text-[#6b6358]">
                 {Number(endHour) - Number(startHour)}h × ${rate}
               </p>
             )}
           </div>
-          <span className="font-display text-5xl font-normal leading-none text-[#f7f4ef] transition-all duration-300">{totalCost !== null ? `$${totalCost}` : "—"}</span>
+          <span className="font-display text-5xl font-normal leading-none text-[#f7f4ef] transition-all duration-300">
+            {totalCost !== null ? `$${totalCost}` : "—"}
+          </span>
         </div>
 
         <div className="w-full h-px bg-white/10 mb-8" />
@@ -174,8 +214,12 @@ const BookingCard = ({ room }) => {
             { key: "Capacity", val: `${capacity} People` },
           ].map(({ key, val }) => (
             <div key={key} className="flex justify-between items-center">
-              <span className="font-body text-[0.6rem] tracking-[0.18em] uppercase text-[#6b6358]">{key}</span>
-              <span className="font-display text-base text-[#c8bfb0]">{val}</span>
+              <span className="font-body text-[0.6rem] tracking-[0.18em] uppercase text-[#6b6358]">
+                {key}
+              </span>
+              <span className="font-display text-base text-[#c8bfb0]">
+                {val}
+              </span>
             </div>
           ))}
         </div>
@@ -186,7 +230,7 @@ const BookingCard = ({ room }) => {
 
         <Button
           onClick={handleBooking}
-          disabled={isLoading}
+          disabled={isLoading || !date || !startHour || !endHour}
           className="font-body block w-full  text-center text-[0.7rem] tracking-[0.28em] uppercase font-medium bg-[#d4a853] text-[#1a1714] hover:bg-[#f7f4ef] hover:tracking-[0.35em] transition-all duration-300"
         >
           Book Now
